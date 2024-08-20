@@ -1,0 +1,40 @@
+services:
+  redis:
+    image: redis/redis-stack
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+      - 8001:8001
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - 5432:5432
+    volumes:
+      - type: bind
+        source: E:/postgres/data
+        target: /var/lib/postgres/data
+  
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+    ports:
+      - 3306:3306
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    depends_on:
+      - postgres
+    restart: always
+    ports:
+      - 8080:8080
